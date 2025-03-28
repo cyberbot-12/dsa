@@ -1,0 +1,89 @@
+/* EVALUATING POSTFIX EXPRESSIONS */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+struct node {
+    int info;
+    struct node* ptrNext;
+};
+typedef struct node SLLNode;
+
+SLLNode* top = NULL, *top1, *temp;
+
+
+
+void push(int data) 
+{
+    if (top == NULL) 
+    {
+        top = (SLLNode*)malloc(sizeof(SLLNode));
+        top->info = data;
+        top->ptrNext = NULL;
+    } 
+    else 
+    {
+        temp = (SLLNode*)malloc(sizeof(SLLNode));
+        temp->info = data;
+        temp->ptrNext = top;
+        top = temp;
+    }
+ }
+
+int pop() 
+{
+    if (top == NULL) 
+    {
+        printf("Stack underflow!\n");
+        exit(EXIT_FAILURE);
+    }
+    int value = top->info;
+    temp = top;
+    top = top->ptrNext;
+    free(temp);
+    return value;
+}
+
+int evaluatePostfix(char* exp) 
+{
+    for (int i = 0; exp[i] != '\0'; i++) 
+    {
+        if (isdigit(exp[i])) 
+        {
+            push(exp[i] - '0');
+        } 
+        else
+        {
+            int operand2 = pop();
+            int operand1 = pop();
+            switch (exp[i]) 
+            {
+                case '+': 
+                    push(operand1 + operand2);
+                    break;
+                case '-': 
+                    push(operand1 - operand2);
+                    break;
+                case '*': 
+                    push(operand1 * operand2);
+                    break;
+                case '/': 
+                    push(operand1 / operand2);
+                    break;
+                default:
+                    printf("Invalid operator encountered!\n");
+                    break;
+            }
+        }
+    }
+    return pop();
+}
+
+void main() 
+{
+    char exp[100];
+    printf("Enter a postfix expression: ");
+    scanf("%s",exp);
+    printf("Result: %d\n", evaluatePostfix(exp));
+}
