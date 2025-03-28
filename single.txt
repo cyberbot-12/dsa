@@ -1,0 +1,209 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node* next;
+};
+
+typedef struct node SLLNode;
+
+SLLNode* head_node = NULL;
+
+int main() {
+    char user_active = 'Y';
+    int user_choice, data, position;
+    SLLNode *new_node, *temp_node, *prev_node;
+
+    while (user_active == 'Y' || user_active == 'y') {
+        printf("\n\n------ Singly Linked List -------\n");
+        printf("\n1. Insert a node at beginning");
+        printf("\n2. Insert a node at end");
+        printf("\n3. Insert a node at given position");
+        printf("\n4. Delete a node from beginning");
+        printf("\n5. Delete a node from end");
+        printf("\n6. Delete a node from given position");
+        printf("\n7. Print list from beginning");
+        printf("\n8. Print list from end");
+        printf("\n9. Search a node data");
+        printf("\n10. Update node data");
+        printf("\n11. Exit");
+        printf("\n\n------------------------------\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &user_choice);
+        printf("\n------------------------------\n");
+
+        switch (user_choice) {
+            case 1:
+                // Insert a node at the beginning
+                printf("\nEnter data: ");
+                scanf("%d", &data);
+                new_node = (SLLNode*)malloc(sizeof(SLLNode));
+                new_node->data = data;
+                new_node->next = head_node;
+                head_node = new_node;
+                break;
+
+            case 2:
+                // Insert a node at the end
+                printf("\nEnter data: ");
+                scanf("%d", &data);
+                new_node = (SLLNode*)malloc(sizeof(SLLNode));
+                new_node->data = data;
+                new_node->next = NULL;
+                if (head_node == NULL) {
+                    head_node = new_node;
+                } else {
+                    temp_node = head_node;
+                    while (temp_node->next != NULL) {
+                        temp_node = temp_node->next;
+                    }
+                    temp_node->next = new_node;
+                }
+                break;
+
+            case 3:
+                // Insert a node at a given position
+                printf("\nEnter data: ");
+                scanf("%d", &data);
+                printf("\nEnter position: ");
+                scanf("%d", &position);
+                new_node = (SLLNode*)malloc(sizeof(SLLNode));
+                new_node->data = data;
+                temp_node = head_node;
+                for (int i = 1; i < position - 1 && temp_node != NULL; i++) {
+                    temp_node = temp_node->next;
+                }
+                if (position == 1 || temp_node == NULL) {
+                    new_node->next = head_node;
+                    head_node = new_node;
+                } else {
+                    new_node->next = temp_node->next;
+                    temp_node->next = new_node;
+                }
+                break;
+
+            case 4:
+                // Delete a node from the beginning
+                if (head_node == NULL) {
+                    printf("\nList is empty!\n");
+                } else {
+                    temp_node = head_node;
+                    head_node = head_node->next;
+                    free(temp_node);
+                }
+                break;
+
+            case 5:
+                // Delete a node from the end
+                if (head_node == NULL) {
+                    printf("\nList is empty!\n");
+                } else {
+                    temp_node = head_node;
+                    prev_node = NULL;
+                    while (temp_node->next != NULL) {
+                        prev_node = temp_node;
+                        temp_node = temp_node->next;
+                    }
+                    if (prev_node == NULL) {
+                        head_node = NULL;
+                    } else {
+                        prev_node->next = NULL;
+                    }
+                    free(temp_node);
+                }
+                break;
+
+            case 6:
+                // Delete a node from a given position
+                printf("\nEnter position: ");
+                scanf("%d", &position);
+                temp_node = head_node;
+                prev_node = NULL;
+                for (int i = 1; i < position && temp_node != NULL; i++) {
+                    prev_node = temp_node;
+                    temp_node = temp_node->next;
+                }
+                if (temp_node == NULL) {
+                    printf("\nInvalid position\n");
+                } else {
+                    if (prev_node == NULL) {
+                        head_node = temp_node->next;
+                    } else {
+                        prev_node->next = temp_node->next;
+                    }
+                    free(temp_node);
+                }
+                break;
+
+            case 7:
+                // Print the list from the beginning
+                temp_node = head_node;
+                while (temp_node != NULL) {
+                    printf("%d ", temp_node->data);
+                    temp_node = temp_node->next;
+                }
+                printf("\n");
+                break;
+
+            case 8:
+        //Print the list from the end (reverse order)void printReverse(SLLNode* node)if (node == NULL) return;
+                    //printReverse(node->next);
+                    //printf("%d ", node->data);
+                //}
+                //printReverse(head_node);
+                //printf("\n");
+                //break;
+
+            case 9:
+                // Search for a node by its data
+                printf("\nEnter data to search: ");
+                scanf("%d", &data);
+                temp_node = head_node;
+                position = 1;
+                while (temp_node != NULL) {
+                    if (temp_node->data == data) {
+                        printf("\nData found at position: %d\n", position);
+                        break;
+                    }
+                    temp_node = temp_node->next;
+                    position++;
+                }
+                if (temp_node == NULL) {
+                    printf("\nData not found!\n");
+                }
+                break;
+
+            case 10:
+                // Update a node’s data at a given position
+                printf("\nEnter position to update: ");
+                scanf("%d", &position);
+                temp_node = head_node;
+                int count = 1;
+                while (count < position && temp_node != NULL) {
+                    temp_node = temp_node->next;
+                    count++;
+                }
+                if (temp_node == NULL) {
+                    printf("\nInvalid position!\n");
+                } else {
+                    printf("\nEnter new data: ");
+                    scanf("%d", &data);
+                    temp_node->data = data;
+                    printf("\nUpdated node data is %d\n", temp_node->data);
+                }
+                break;
+
+            case 11:
+                // Exit the program
+                printf("\nProgram terminated\n\n");
+                return 0;
+default:
+printf("\nInvalid Choice\n");
+}
+printf("\nDo you want to continue? (Y/N) : ");
+fflush(stdin);
+scanf(" %c", &user_active);
+}
+return 0;
+}
